@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Victor Borja — Product × Robotics</title>
+<meta name="description" content="Victor Borja Guimera — technical product manager and robotics engineer in Zurich. Clinical robots at EPFL, platform ecosystems at Frontify, and a live ball-balancing robot in your browser.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+</head>
+<body>
+
+<style>
+/* ============ tokens ============ */
+:root{
+  --paper:#f6f6f3;
+  --panel:#efefe9;
+  --ink:#1a1b2e;
+  --ink-soft:#3c3d55;
+  --muted:#5d5e7a;
+  --line:#d8d8d2;
+  --accent:#32329f;
+  --accent-soft:rgba(50,50,159,.08);
+  --amber:#a97c17;
+  --crash:#b3362a;
+  --chipbg:rgba(50,50,159,.05);
+  --navbg:rgba(246,246,243,.86);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0f1020;
+    --panel:#171930;
+    --ink:#e7e7f2;
+    --ink-soft:#c0c1d8;
+    --muted:#8b8ca8;
+    --line:#2a2c4a;
+    --accent:#9b9bff;
+    --accent-soft:rgba(155,155,255,.09);
+    --amber:#d9a53a;
+    --crash:#ff6b5e;
+    --chipbg:rgba(155,155,255,.06);
+    --navbg:rgba(15,16,32,.86);
+  }
+}
+:root[data-theme="light"]{
+  --paper:#f6f6f3; --panel:#efefe9; --ink:#1a1b2e; --ink-soft:#3c3d55;
+  --muted:#5d5e7a; --line:#d8d8d2; --accent:#32329f;
+  --accent-soft:rgba(50,50,159,.08); --amber:#a97c17; --crash:#b3362a;
+  --chipbg:rgba(50,50,159,.05); --navbg:rgba(246,246,243,.86);
+}
+:root[data-theme="dark"]{
+  --paper:#0f1020; --panel:#171930; --ink:#e7e7f2; --ink-soft:#c0c1d8;
+  --muted:#8b8ca8; --line:#2a2c4a; --accent:#9b9bff;
+  --accent-soft:rgba(155,155,255,.09); --amber:#d9a53a; --crash:#ff6b5e;
+  --chipbg:rgba(155,155,255,.06); --navbg:rgba(15,16,32,.86);
+}
+
+/* ============ base ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:1.0625rem; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.serif{
+  font-family:Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif;
+  font-weight:700; line-height:1.12; text-wrap:balance; margin:0;
+}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline; text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;
+}
+p{margin:0}
+.wrap{max-width:1080px; margin:0 auto; padding:0 1.4rem}
+section{padding:5.2rem 0 0}
+.kicker{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); display:flex; align-items:center; gap:.7rem; margin-bottom:1.1rem;
+}
+.kicker::after{content:""; flex:1; height:1px; background:var(--line)}
+.rv{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.rv.in{opacity:1; transform:none}
+@media (prefers-reduced-motion: reduce){ .rv{opacity:1; transform:none; transition:none} }
+
+/* ============ nav ============ */
+nav{
+  position:sticky; top:0; z-index:50; background:var(--navbg);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.navrow{display:flex; align-items:center; gap:1.1rem; padding:.7rem 1.4rem; max-width:1080px; margin:0 auto; flex-wrap:wrap}
+.logo{font-family:Charter,Georgia,serif; font-weight:700; font-size:1.15rem; color:var(--ink); letter-spacing:.02em}
+.logo b{color:var(--accent)}
+.navlinks{display:flex; gap:1.05rem; margin-left:auto; flex-wrap:wrap; align-items:center}
+.navlinks a{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.72rem;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+}
+.navlinks a:hover{color:var(--accent); text-decoration:none}
+#themeBtn{
+  background:none; border:1px solid var(--line); color:var(--muted); cursor:pointer;
+  border-radius:999px; width:1.9rem; height:1.9rem; font-size:.85rem; line-height:1;
+}
+#themeBtn:hover{color:var(--accent); border-color:var(--accent)}
+
+/* ============ hero ============ */
+header.hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line)}
+#waves{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+.hero-inner{position:relative; padding:5.6rem 0 4rem}
+.hero .kicker{margin-bottom:1.6rem}
+.hero .kicker::after{display:none}
+.hero h1{font-size:clamp(1.6rem,3.2vw,2.1rem); color:var(--muted); font-weight:400; font-style:italic; margin-bottom:.4rem}
+.hero .display{
+  font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif; font-weight:700;
+  font-size:clamp(2.5rem,6vw,4.3rem); line-height:1.06; letter-spacing:-.01em;
+  max-width:17ch; margin:.2rem 0 1.4rem;
+}
+.hero .display em{font-style:italic; color:var(--accent)}
+.lede{max-width:62ch; color:var(--ink-soft); font-size:1.11rem; margin-bottom:1.9rem}
+.chips{display:flex; flex-wrap:wrap; gap:.55rem; margin-bottom:2.1rem}
+.chip{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.74rem;
+  border:1px solid var(--line); background:var(--chipbg); color:var(--ink-soft);
+  padding:.34rem .7rem; border-radius:999px; white-space:nowrap;
+}
+.chip b{color:var(--accent); font-weight:600}
+.ctas{display:flex; gap:.8rem; flex-wrap:wrap}
+.btn{
+  display:inline-block; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.8rem; letter-spacing:.08em; text-transform:uppercase;
+  padding:.72rem 1.15rem; border:1px solid var(--accent); border-radius:3px;
+  color:var(--accent); background:none; cursor:pointer;
+}
+.btn.primary{background:var(--accent); color:var(--paper)}
+.btn:hover{text-decoration:none; filter:brightness(1.08)}
+
+/* ============ figure / sim ============ */
+.figpanel{
+  border:1px solid var(--line); background:var(--panel); border-radius:6px;
+  padding:1.1rem 1.1rem 1rem; margin-top:2.4rem;
+}
+.figbar{display:flex; align-items:baseline; gap:.8rem; flex-wrap:wrap; margin-bottom:.8rem}
+.figno{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.72rem; letter-spacing:.13em; text-transform:uppercase; color:var(--amber)}
+.figtitle{font-family:Charter,Georgia,serif; font-style:italic; font-size:1.02rem; color:var(--ink-soft)}
+.live{display:inline-flex; align-items:center; gap:.38rem; font-family:ui-monospace,Menlo,monospace; font-size:.68rem; letter-spacing:.12em; color:var(--amber); text-transform:uppercase; margin-left:auto}
+.live i{width:.5rem; height:.5rem; border-radius:50%; background:var(--amber); display:inline-block; animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){ .live i{animation:none} }
+#sim{display:block; width:100%; height:340px; border:1px solid var(--line); border-radius:4px; background:var(--paper); cursor:crosshair; touch-action:manipulation}
+#chart{display:block; width:100%; height:110px; border:1px solid var(--line); border-top:none; border-radius:0 0 4px 4px; background:var(--paper)}
+.telem{display:flex; gap:1.4rem; flex-wrap:wrap; padding:.65rem .2rem .1rem; font-variant-numeric:tabular-nums}
+.telem div{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.78rem; color:var(--muted)}
+.telem b{color:var(--ink); font-weight:600; font-size:.92rem}
+.telem .tau b{color:var(--amber)}
+.telem .th b{color:var(--accent)}
+.ctls{display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; padding-top:.75rem}
+.ctl{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.76rem;
+  letter-spacing:.05em; padding:.5rem .85rem; border:1px solid var(--line);
+  background:var(--paper); color:var(--ink); border-radius:3px; cursor:pointer;
+}
+.ctl:hover{border-color:var(--accent); color:var(--accent)}
+.ctl.on{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+.windbox{display:flex; align-items:center; gap:.5rem; font-family:ui-monospace,Menlo,monospace; font-size:.74rem; color:var(--muted)}
+.windbox input{accent-color:var(--accent); width:130px}
+.figcap{font-size:.85rem; color:var(--muted); padding-top:.9rem; max-width:76ch; line-height:1.55}
+.figcap a{white-space:nowrap}
+#crashbar{
+  display:none; margin-top:.75rem; border:1px solid var(--crash); color:var(--crash);
+  font-family:ui-monospace,Menlo,monospace; font-size:.8rem; padding:.55rem .8rem; border-radius:3px;
+}
+#crashbar.show{display:flex; align-items:center; gap:.9rem; flex-wrap:wrap}
+#crashbar button{border-color:var(--crash); color:var(--crash)}
+
+/* ============ cards ============ */
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:1.1rem}
+.card{
+  border:1px solid var(--line); border-radius:6px; padding:1.5rem 1.5rem 1.35rem;
+  background:var(--paper); display:flex; flex-direction:column; gap:.75rem;
+  transition:border-color .25s ease;
+}
+.card:hover{border-color:var(--accent)}
+.card .eyebrow{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.7rem;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--muted);
+}
+.card .eyebrow b{color:var(--accent); font-weight:600}
+.card h3{font-size:1.38rem}
+.card p{font-size:.95rem; color:var(--ink-soft)}
+.card .stats{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:auto; padding-top:.5rem}
+.stat{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.73rem;
+  border:1px solid var(--line); border-radius:3px; padding:.3rem .55rem; color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.stat b{color:var(--ink); font-weight:600}
+.card.featured{grid-column:span 2; background:var(--panel)}
+@media (max-width:760px){ .card.featured{grid-column:span 1} }
+.card .tags{display:flex; flex-wrap:wrap; gap:.4rem}
+.tag{font-family:ui-monospace,Menlo,monospace; font-size:.68rem; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); padding:.2rem .5rem; border-radius:999px}
+.card .plink{font-family:ui-monospace,Menlo,monospace; font-size:.74rem; margin-top:auto; padding-top:.4rem}
+
+/* ============ now band ============ */
+.nowband{
+  border:1px solid var(--line); border-left:3px solid var(--amber); border-radius:4px;
+  background:var(--accent-soft); padding:1.4rem 1.6rem; display:flex; gap:1rem; flex-wrap:wrap; align-items:baseline;
+}
+.nowband .k{font-family:ui-monospace,Menlo,monospace; font-size:.72rem; letter-spacing:.13em; text-transform:uppercase; color:var(--amber); white-space:nowrap}
+.nowband p{flex:1; min-width:260px; font-size:.98rem; color:var(--ink-soft)}
+
+/* ============ about ============ */
+.about-grid{display:grid; grid-template-columns:1.55fr 1fr; gap:2.6rem}
+@media (max-width:760px){ .about-grid{grid-template-columns:1fr} }
+.about-grid .narr p{margin-bottom:1.05rem; color:var(--ink-soft); max-width:62ch}
+.about-grid .narr p:first-child::first-letter{
+  font-family:Charter,Georgia,serif; font-size:3.1em; float:left; line-height:.82;
+  padding:.06em .12em 0 0; color:var(--accent); font-weight:700;
+}
+.facts{display:flex; flex-direction:column; gap:1.05rem; border-left:1px solid var(--line); padding-left:1.6rem}
+.facts .k{font-family:ui-monospace,Menlo,monospace; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:.15rem}
+.facts .v{font-size:.93rem; color:var(--ink-soft)}
+
+/* ============ contact / footer ============ */
+.contact h2{font-size:clamp(1.7rem,3.6vw,2.5rem); max-width:22ch; margin-bottom:1.6rem}
+.linkrow{display:flex; flex-wrap:wrap; gap:1.5rem; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.85rem}
+footer{border-top:1px solid var(--line); margin-top:5.5rem}
+footer .wrap{
+  padding-top:1.3rem; padding-bottom:2.2rem; display:flex; flex-wrap:wrap; gap:.6rem 2rem;
+  font-family:ui-monospace,Menlo,monospace; font-size:.72rem; color:var(--muted);
+}
+h2.sect{font-size:clamp(1.55rem,3vw,2.15rem); margin-bottom:1.6rem}
+</style>
+
+<!-- ============ NAV ============ -->
+<nav aria-label="Main">
+  <div class="navrow">
+    <span class="logo">Victor<b>Borja</b></span>
+    <div class="navlinks">
+      <a href="#lab">Lab</a>
+      <a href="#work">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <button id="themeBtn" title="Toggle theme" aria-label="Toggle color theme">◐</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas id="waves" aria-hidden="true"></canvas>
+  <div class="wrap hero-inner">
+    <div class="kicker">Zurich, Switzerland · Product × Robotics</div>
+    <h1>Victor Borja Guimera</h1>
+    <p class="display">Product for technology that touches the <em>physical world</em>.</p>
+    <p class="lede">
+      I'm a robotics engineer who became a product manager because I kept wanting to own the whole
+      problem — the hardware, the software, and the decision about what's worth building.
+      Nine years across control systems, clinical robotics, and B2B platforms; currently shaping
+      the integration ecosystem at Frontify.
+    </p>
+    <div class="chips">
+      <span class="chip"><b>IROS 2022</b> published robotics research</span>
+      <span class="chip"><b>EPFL</b> medical robot, 0 → clinical pilots</span>
+      <span class="chip"><b>2× ARR, twice</b> as first PM at Timly</span>
+      <span class="chip"><b>≈100 integrations</b> one ecosystem at Frontify</span>
+    </div>
+    <div class="ctas">
+      <a class="btn primary" href="#lab">Push the robot</a>
+      <a class="btn" href="#work">Field reports</a>
+    </div>
+
+    <!-- ============ FIG 01 : BALLBOT ============ -->
+    <div class="figpanel" id="lab">
+      <div class="figbar">
+        <span class="figno">Fig. 01 — Live system</span>
+        <span class="figtitle">Ball-balancing robot, planar model · state-feedback control @ 240 Hz</span>
+        <span class="live"><i></i> running</span>
+      </div>
+      <canvas id="sim" tabindex="0" aria-label="Interactive ball-balancing robot simulation. Use the push buttons or arrow keys to disturb it."></canvas>
+      <canvas id="chart" aria-hidden="true"></canvas>
+      <noscript><p class="figcap">The live simulation needs JavaScript — the equations still work without it, but you'll have to trust me.</p></noscript>
+      <div class="telem" aria-live="off">
+        <div class="th">θ lean <b id="tTh">0.0°</b></div>
+        <div>ẋ ball <b id="tXd">0.00 m/s</b></div>
+        <div class="tau">τ motor <b id="tTau">0.0 N·m</b></div>
+        <div>balanced for <b id="tUp">0.0 s</b></div>
+      </div>
+      <div class="ctls">
+        <button class="ctl" id="pushL" title="Shove left">← push</button>
+        <button class="ctl" id="pushR" title="Shove right">push →</button>
+        <span class="windbox">wind <input type="range" id="wind" min="-25" max="25" value="0" step="1" aria-label="Wind force in newtons"> <span id="windV">0 N</span></span>
+        <button class="ctl on" id="ctrlBtn" aria-pressed="true">controller: ON</button>
+        <button class="ctl" id="resetBtn">reset</button>
+      </div>
+      <div id="crashbar">
+        <span>Crashed. Even feedback linearization has limits.</span>
+        <button class="ctl" id="crashReset">reset</button>
+      </div>
+      <p class="figcap">
+        A planar cousin of my master thesis — <a href="https://github.com/VBorjaDD/MasterThesis" target="_blank" rel="noopener"><em>Control of a Ball-Balancing Robot</em></a>
+        (Aalborg University, 2020): five degrees of freedom, three actuators, an underactuated MIMO system
+        modeled with quaternion dynamics, estimated by unscented Kalman filters, and stabilized by nonlinear
+        feedback linearization. This demo runs a 2-DOF simplification with LQR-style state feedback.
+        Click the canvas or use ←/→ to shove it. Add wind and notice the steady-state lean — this
+        controller has no integral action. The full treatment (and why the humble EKF beat my fancy UKF) is in the thesis.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WORK ============ -->
+<section id="work">
+  <div class="wrap">
+    <div class="kicker">Field reports</div>
+    <h2 class="sect serif rv">Ambiguous technical problem, shipped product. Four times.</h2>
+    <div class="grid">
+      <article class="card featured rv">
+        <span class="eyebrow"><b>EPFL · CHILI Lab</b> · 2021–2023 · Lead Engineer &amp; Product Manager</span>
+        <h3>The robot that changed jobs</h3>
+        <p>
+          I was hired to add features to a tabletop educational robot and explore a spinout. Discovery with
+          clinicians surfaced something better: stroke-rehabilitation therapy. We pivoted — building a gamified,
+          tangible Pac-Man-like therapy on the robot's haptic and modular capabilities, validated with hospital
+          partners. To get there I led the full rebuild: mechanical drive redesign, new electronics, scalable
+          firmware, ROS integration, a Unity SDK for therapy games, and clinician-facing monitoring UIs.
+          In robotics, discovering the right use case <em>is</em> the product decision.
+        </p>
+        <div class="stats">
+          <span class="stat">path accuracy <b>80% → 98%</b></span>
+          <span class="stat">mechanical cost <b>−60%</b></span>
+          <span class="stat">production cost <b>−30%</b></span>
+          <span class="stat">published <b>IROS 2022</b></span>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow"><b>Frontify</b> · 2025–present · Senior PM, Ecosystem &amp; Integrations</span>
+        <h3>From ~100 integrations to one ecosystem</h3>
+        <p>
+          I inherited a hundred-odd integrations, fifteen-plus partners, and no operating model. I built the
+          governance, portfolio structure, and delivery function; redirected Frontify's first e-commerce
+          integration to a synchronization architecture after discovery broke the original concept; and
+          started the ecosystem's first usage-analytics foundation. Also: AI-governance discovery — content
+          credentials (C2PA), provenance, EU AI Act readiness.
+        </p>
+        <div class="stats">
+          <span class="stat"><b>≈100</b> integrations, one model</span>
+          <span class="stat"><b>15+</b> partner engagements</span>
+          <span class="stat"><b>1st</b> e-commerce integration</span>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow"><b>Timly</b> · 2023–2025 · First Product Manager</span>
+        <h3>Feature factory → product-led</h3>
+        <p>
+          First PM at a Zurich SaaS startup. I built the product function from zero — discovery cadence,
+          prioritization, Mixpanel/NPS instrumentation, session recordings — and moved the company from
+          shipping features to shipping outcomes. The numbers followed.
+        </p>
+        <div class="stats">
+          <span class="stat">ARR &amp; customers <b>2× YoY, twice</b></span>
+          <span class="stat">NPS <b>4.0 → 7.2</b></span>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow"><b>Fremco</b> · 2018–2019 · R&amp;D Engineer</span>
+        <h3>Robots meet mud</h3>
+        <p>
+          Sensing and data-acquisition systems for fiber-optic installation machinery, tested in the field with
+          the operators who used them. Industrial reality is the best teacher of failure modes — lab prototypes
+          don't get rained on.
+        </p>
+        <div class="stats">
+          <span class="stat">embedded <b>sensing → production design</b></span>
+          <span class="stat"><b>field-tested</b> with operators</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="kicker">Selected systems</div>
+    <h2 class="sect serif rv">Things I've modeled, built, or published.</h2>
+    <div class="grid">
+      <article class="card rv">
+        <span class="eyebrow">MSc thesis · Aalborg · 2020</span>
+        <h3>Control of a Ball-Balancing Robot</h3>
+        <p>Quaternion Lagrangian dynamics for a 5-DOF underactuated MIMO ballbot; unit-norm-preserving
+        unscented Kalman filters; cascade nonlinear feedback-linearization control benchmarked against
+        sliding mode. Honest finding: the simpler EKF won on complexity-vs-benefit.</p>
+        <div class="tags"><span class="tag">quaternions</span><span class="tag">UKF</span><span class="tag">nonlinear control</span><span class="tag">Simulink</span></div>
+        <a class="plink" href="https://github.com/VBorjaDD/MasterThesis" target="_blank" rel="noopener">github.com/VBorjaDD/MasterThesis ↗</a>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow">Publication · IROS 2022</span>
+        <h3>Modulo Cellulo: Modular Versatile Tangible Educational Robots</h3>
+        <p>The peer-reviewed account of the robot platform I led at EPFL — modularity, tangibility, and the
+        engineering that let one small robot serve classrooms and clinics alike.</p>
+        <div class="tags"><span class="tag">IROS</span><span class="tag">haptics</span><span class="tag">HRI</span></div>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow">Startup incubator · Aalborg</span>
+        <h3>Wall-painting construction robot</h3>
+        <p>Led business planning and market research for an autonomous painting concept; ran workshops and
+        community events with Techstars Kickstart Aalborg on the side.</p>
+        <div class="tags"><span class="tag">0→1</span><span class="tag">construction</span><span class="tag">market research</span></div>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow">MSc portfolio · 2018–2020</span>
+        <h3>Grippers, ultrasound &amp; hydraulics</h3>
+        <p>A low-cost underactuated robotic gripper; ultrasonic fault detection for concrete and metals;
+        modeling and control of a hydraulic press. Project-based learning, Danish style.</p>
+        <div class="tags"><span class="tag">mechatronics</span><span class="tag">NDT</span><span class="tag">control</span></div>
+      </article>
+
+      <article class="card rv">
+        <span class="eyebrow">Side project</span>
+        <h3>ControlBased trading</h3>
+        <p>What happens if you treat a trading strategy as a control loop? A backtesting experiment applying
+        feedback-control thinking to markets. Conclusion: plants with adversarial dynamics are rude.</p>
+        <div class="tags"><span class="tag">control theory</span><span class="tag">backtesting</span><span class="tag">Python</span></div>
+        <a class="plink" href="https://github.com/VBorjaDD/ControlBased" target="_blank" rel="noopener">github.com/VBorjaDD/ControlBased ↗</a>
+      </article>
+    </div>
+
+    <div style="margin-top:2.2rem" class="rv">
+      <div class="nowband">
+        <span class="k">● Current focus</span>
+        <p>Robot learning. Working through the VLA stack — RT-2, OpenVLA, π0 — and rebuilding the ballbot
+        in modern simulation to compare classical control against learned policies. Notes will land here.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="kicker">About</div>
+    <div class="about-grid">
+      <div class="narr rv">
+        <p>
+          I started coding at fourteen because logic mapped cleanly onto outcomes. I studied software
+          engineering, then went back for a second degree in industrial engineering — because I wanted to
+          understand the physical world I was writing code for. Choosing years of a second foundation over
+          a faster paycheck is the most honest signal of how I'm wired: depth and optionality over the fast path.
+        </p>
+        <p>
+          Since then I've oscillated between deep tech — control systems, sensing, robotics, computer vision —
+          and the strategic side: consulting at Accenture and EY, then product leadership in Swiss SaaS.
+          At EPFL the two careers fused. I'm most useful at the seam where software, hardware, and operations
+          meet, translating hard technical reality into business decisions and back.
+        </p>
+        <p>
+          What I'm optimizing for now: a return to deep tech — robotics, AI, computer vision — in domains where
+          the work touches the real world: medical devices, construction, agriculture. The long-term goal hasn't
+          changed since I was eighteen: build my own products.
+        </p>
+      </div>
+      <div class="facts rv">
+        <div><div class="k">Based</div><div class="v">Zurich, Switzerland · EU citizen · Permit B</div></div>
+        <div><div class="k">Education</div><div class="v">MSc Mechatronics &amp; Control, Aalborg · BSc Industrial Eng., Carlos III · BSc Software Eng., King Juan Carlos</div></div>
+        <div><div class="k">Languages</div><div class="v">Spanish (native) · English (C1) · German (A2) · French (A2)</div></div>
+        <div><div class="k">Mentoring</div><div class="v"><a href="https://adplist.org/mentors/victor-borja" target="_blank" rel="noopener">ADPList</a> · Lenny's community · 8 mentees across product &amp; engineering</div></div>
+        <div><div class="k">Elsewhere</div><div class="v"><a href="https://linkedin.com/in/vborja" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/VBorjaDD" target="_blank" rel="noopener">GitHub</a></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="wrap contact">
+    <div class="kicker">Contact</div>
+    <h2 class="serif rv">The interesting conversations are about robots, products, or both.</h2>
+    <div class="linkrow rv">
+      <a href="mailto:v.borja1991@gmail.com">v.borja1991@gmail.com</a>
+      <a href="https://linkedin.com/in/vborja" target="_blank" rel="noopener">linkedin.com/in/vborja</a>
+      <a href="https://github.com/VBorjaDD" target="_blank" rel="noopener">github.com/VBorjaDD</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Victor Borja</span>
+    <span>One hand-written HTML file with a live control loop inside — no frameworks.</span>
+    <span>q = [q₀ q₁ q₂ q₃]ᵀ, ‖q‖ = 1</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- theme ---------- */
+var root=document.documentElement;
+function storedTheme(){ try{return localStorage.getItem("vb-theme")}catch(e){return null} }
+var t0=storedTheme(); if(t0==="dark"||t0==="light"){ root.dataset.theme=t0; }
+document.getElementById("themeBtn").addEventListener("click",function(){
+  var dark = root.dataset.theme ? root.dataset.theme==="dark"
+           : matchMedia("(prefers-color-scheme: dark)").matches;
+  var next = dark ? "light" : "dark";
+  root.dataset.theme=next;
+  try{localStorage.setItem("vb-theme",next)}catch(e){}
+});
+
+/* ---------- palette cache (sim reads CSS tokens) ---------- */
+var pal={};
+function readPal(){
+  var cs=getComputedStyle(root.ownerDocument.body);
+  var cs2=getComputedStyle(root);
+  function v(n){ return (cs2.getPropertyValue(n)||cs.getPropertyValue(n)).trim(); }
+  pal={ink:v("--ink"),soft:v("--ink-soft"),muted:v("--muted"),line:v("--line"),
+       accent:v("--accent"),amber:v("--amber"),crash:v("--crash"),paper:v("--paper")};
+}
+readPal();
+new MutationObserver(function(){readPal(); drawWaves();}).observe(root,{attributes:true,attributeFilter:["data-theme"]});
+try{ matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){readPal(); drawWaves();}); }catch(e){}
+
+/* ---------- reveal on scroll ---------- */
+var reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var rvs=document.querySelectorAll(".rv");
+if(reduced||!("IntersectionObserver" in window)){
+  rvs.forEach(function(el){el.classList.add("in")});
+}else{
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+  },{threshold:.12});
+  rvs.forEach(function(el){io.observe(el)});
+}
+
+/* ---------- hero waves (thesis-cover motif) ---------- */
+var wc=document.getElementById("waves"), wctx=wc.getContext("2d");
+function drawWaves(){
+  var r=wc.parentElement.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  wc.width=r.width*dpr; wc.height=r.height*dpr;
+  wctx.setTransform(dpr,0,0,dpr,0,0);
+  wctx.clearRect(0,0,r.width,r.height);
+  wctx.strokeStyle=pal.accent; wctx.lineWidth=1.2;
+  var N=13;
+  for(var i=0;i<N;i++){
+    var yb=r.height*(0.12+0.075*i);
+    wctx.globalAlpha=0.05+0.025*Math.sin(i*1.7);
+    wctx.beginPath();
+    for(var x=0;x<=r.width;x+=8){
+      var y=yb+26*Math.sin(x/230+i*0.9)+14*Math.sin(x/97-i*1.3);
+      if(x===0)wctx.moveTo(x,y); else wctx.lineTo(x,y);
+    }
+    wctx.stroke();
+  }
+  wctx.globalAlpha=1;
+}
+drawWaves();
+addEventListener("resize",drawWaves);
+
+/* =========================================================
+   Fig. 01 — planar ballbot (cart-pole form, force at ball)
+   states: x, xd (ball), th, thd (body lean from vertical, +right)
+   M: ball effective mass (incl. rolling inertia)  m,l: body
+   ========================================================= */
+var P={M:2.2,m:4.0,l:0.5,r:0.12,g:9.81,Fmax:90,cx:1.5,cth:0.08,wall:2.35};
+var K={th:420,thd:95,x:18,xd:46};
+var S={x:0,xd:0,th:0.02,thd:0,F:0,W:0,ctrl:true,crashed:false,up:0};
+
+function step(dt){
+  var F=0;
+  if(S.ctrl&&!S.crashed){
+    F=K.th*S.th+K.thd*S.thd+K.x*S.x+K.xd*S.xd;
+    if(F> P.Fmax)F= P.Fmax;
+    if(F<-P.Fmax)F=-P.Fmax;
+  }
+  S.F=F;
+  var c=Math.cos(S.th), s=Math.sin(S.th), W=S.W;
+  /* A [xdd,thdd] = b   (2nd row divided by l) */
+  var A11=P.M+P.m, A12=P.m*P.l*c, A21=P.m*c, A22=P.m*P.l;
+  var b1=F+W+P.m*P.l*S.thd*S.thd*s - P.cx*S.xd;
+  var b2=P.m*P.g*s + W*c - P.cth*S.thd/P.l;
+  var det=A11*A22-A12*A21;
+  var xdd=(b1*A22-A12*b2)/det;
+  var thdd=(A11*b2-A21*b1)/det;
+  S.xd+=xdd*dt; S.thd+=thdd*dt;
+  S.x+=S.xd*dt; S.th+=S.thd*dt;
+  /* walls */
+  if(S.x> P.wall){S.x= P.wall; S.xd*=-0.3;}
+  if(S.x<-P.wall){S.x=-P.wall; S.xd*=-0.3;}
+  /* crash + ground */
+  if(!S.crashed && Math.abs(S.th)>1.05 && S.ctrl){ crash(); }
+  var lim=1.42;
+  if(Math.abs(S.th)>=lim){ S.th=S.th>0?lim:-lim; S.thd=0; if(!S.crashed&&!S.ctrl){crash();} }
+  if(!S.crashed) S.up+=dt;
+}
+function crash(){
+  S.crashed=true;
+  document.getElementById("crashbar").classList.add("show");
+  document.querySelector(".live").innerHTML="<i></i> crashed";
+}
+function reset(){
+  S.x=0;S.xd=0;S.th=0.02;S.thd=0;S.F=0;S.up=0;S.crashed=false;
+  document.getElementById("crashbar").classList.remove("show");
+  document.querySelector(".live").innerHTML="<i></i> running";
+  bufTh.length=0; bufTau.length=0;
+}
+
+/* ---------- canvases ---------- */
+var cv=document.getElementById("sim"), ctx=cv.getContext("2d");
+var ch=document.getElementById("chart"), chx=ch.getContext("2d");
+function fit(c){
+  var r=c.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  if(c.width!==Math.round(r.width*dpr)||c.height!==Math.round(r.height*dpr)){
+    c.width=Math.round(r.width*dpr); c.height=Math.round(r.height*dpr);
+  }
+  c.getContext("2d").setTransform(dpr,0,0,dpr,0,0);
+  return r;
+}
+if("ResizeObserver" in window){ new ResizeObserver(function(){fit(cv);fit(ch);}).observe(cv); }
+
+function drawSim(){
+  var r=fit(cv), Wd=r.width, H=r.height;
+  ctx.clearRect(0,0,Wd,H);
+  var scale=Math.max(80,Math.min(150,Wd/5.0));
+  var gy=H*0.80, cxs=Wd/2;
+  /* ground + grid */
+  ctx.strokeStyle=pal.line; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,gy+0.5); ctx.lineTo(Wd,gy+0.5); ctx.stroke();
+  ctx.font="10px ui-monospace,Menlo,monospace"; ctx.fillStyle=pal.muted; ctx.textAlign="center";
+  for(var gm=-2;gm<=2;gm+=1){
+    var gx=cxs+gm*scale;
+    ctx.globalAlpha=0.55; ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx,gy+6); ctx.stroke(); ctx.globalAlpha=1;
+    ctx.fillText(gm+" m",gx,gy+18);
+  }
+  /* wind streams */
+  if(S.W!==0){
+    ctx.strokeStyle=pal.muted; ctx.globalAlpha=.5; ctx.setLineDash([7,7]);
+    var dir=S.W>0?1:-1, n=Math.min(4,Math.ceil(Math.abs(S.W)/7));
+    for(var i=0;i<n;i++){
+      var wy=gy-scale*(0.55+0.22*i);
+      ctx.beginPath(); ctx.moveTo(cxs-dir*Wd*0.42,wy); ctx.lineTo(cxs+dir*Wd*0.42,wy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cxs+dir*Wd*0.42,wy); ctx.lineTo(cxs+dir*(Wd*0.42-8),wy-4); ctx.moveTo(cxs+dir*Wd*0.42,wy); ctx.lineTo(cxs+dir*(Wd*0.42-8),wy+4); ctx.stroke();
+    }
+    ctx.setLineDash([]); ctx.globalAlpha=1;
+  }
+  /* robot */
+  var bx=cxs+S.x*scale, by=gy-P.r*scale, rr=P.r*scale;
+  /* ball */
+  ctx.strokeStyle=pal.ink; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(bx,by,rr,0,6.2832); ctx.stroke();
+  var phi=S.x/P.r;
+  for(var k2=0;k2<3;k2++){
+    var a=phi+k2*2.0944;
+    ctx.strokeStyle=pal.muted; ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx+rr*0.85*Math.cos(a),by+rr*0.85*Math.sin(a)); ctx.stroke();
+  }
+  /* body: capsule from ball center along lean */
+  var Lv=0.68*scale, tx=bx+Math.sin(S.th)*Lv, ty=by-Math.cos(S.th)*Lv;
+  ctx.lineCap="round";
+  ctx.strokeStyle=S.crashed?pal.crash:pal.accent; ctx.lineWidth=0.115*scale;
+  ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(tx,ty); ctx.stroke();
+  ctx.strokeStyle=pal.ink; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(tx,ty,0.085*scale,0,6.2832); ctx.stroke();
+  /* IMU dot */
+  ctx.fillStyle=pal.amber; ctx.beginPath(); ctx.arc(tx,ty,3,0,6.2832); ctx.fill();
+  /* torque arrow at contact */
+  if(Math.abs(S.F)>1){
+    var fl=(S.F/P.Fmax)*scale*0.9;
+    ctx.strokeStyle=pal.amber; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(bx,gy+10); ctx.lineTo(bx+fl,gy+10); ctx.stroke();
+    var d2=fl>0?1:-1;
+    ctx.beginPath(); ctx.moveTo(bx+fl,gy+10); ctx.lineTo(bx+fl-6*d2,gy+6); ctx.moveTo(bx+fl,gy+10); ctx.lineTo(bx+fl-6*d2,gy+14); ctx.stroke();
+  }
+  ctx.lineCap="butt";
+}
+
+/* ---------- strip chart ---------- */
+var bufTh=[],bufTau=[],MAXB=480;
+function pushBuf(){
+  bufTh.push(S.th*57.2958); bufTau.push(S.F*P.r);
+  if(bufTh.length>MAXB){bufTh.shift();bufTau.shift();}
+}
+function drawChart(){
+  var r=fit(ch), Wd=r.width, H=r.height, mid=H/2;
+  chx.clearRect(0,0,Wd,H);
+  chx.strokeStyle=pal.line; chx.lineWidth=1;
+  chx.beginPath(); chx.moveTo(0,mid+0.5); chx.lineTo(Wd,mid+0.5); chx.stroke();
+  chx.globalAlpha=.45;
+  chx.beginPath(); chx.moveTo(0,mid/2); chx.lineTo(Wd,mid/2); chx.stroke();
+  chx.beginPath(); chx.moveTo(0,mid*1.5); chx.lineTo(Wd,mid*1.5); chx.stroke();
+  chx.globalAlpha=1;
+  function trace(buf,range,color){
+    chx.strokeStyle=color; chx.lineWidth=1.5; chx.beginPath();
+    for(var i=0;i<buf.length;i++){
+      var px=Wd-(buf.length-i)*(Wd/MAXB);
+      var py=mid-(buf[i]/range)*(H*0.42);
+      if(py<2)py=2; if(py>H-2)py=H-2;
+      if(i===0)chx.moveTo(px,py); else chx.lineTo(px,py);
+    }
+    chx.stroke();
+  }
+  trace(bufTh,25,pal.accent);
+  trace(bufTau,12,pal.amber);
+  chx.font="9px ui-monospace,Menlo,monospace"; chx.textAlign="left";
+  chx.fillStyle=pal.accent; chx.fillText("θ ±25°",8,12);
+  chx.fillStyle=pal.amber; chx.fillText("τ ±12 N·m",64,12);
+}
+
+/* ---------- telemetry ---------- */
+var eTh=document.getElementById("tTh"),eXd=document.getElementById("tXd"),
+    eTau=document.getElementById("tTau"),eUp=document.getElementById("tUp");
+function telem(){
+  eTh.textContent=(S.th*57.2958).toFixed(1)+"°";
+  eXd.textContent=S.xd.toFixed(2)+" m/s";
+  eTau.textContent=(S.F*P.r).toFixed(1)+" N·m";
+  eUp.textContent=S.up.toFixed(1)+" s";
+}
+
+/* ---------- main loop (paused off-screen) ---------- */
+var visible=true;
+if("IntersectionObserver" in window){
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;},{threshold:0})
+    .observe(document.getElementById("lab"));
+}
+var last=performance.now(), acc=0, DT=1/240;
+function loop(now){
+  requestAnimationFrame(loop);
+  var dt=(now-last)/1000; last=now;
+  if(!visible) return;
+  if(dt>0.05)dt=0.05;
+  acc+=dt;
+  while(acc>=DT){ step(DT); acc-=DT; }
+  pushBuf(); drawSim(); drawChart(); telem();
+}
+requestAnimationFrame(loop);
+
+/* ---------- controls ---------- */
+function shove(dir){ if(S.crashed)return; S.thd+=dir*0.55; }
+document.getElementById("pushL").addEventListener("click",function(){shove(-1)});
+document.getElementById("pushR").addEventListener("click",function(){shove(1)});
+document.getElementById("resetBtn").addEventListener("click",reset);
+document.getElementById("crashReset").addEventListener("click",reset);
+var ctrlBtn=document.getElementById("ctrlBtn");
+ctrlBtn.addEventListener("click",function(){
+  S.ctrl=!S.ctrl;
+  ctrlBtn.textContent="controller: "+(S.ctrl?"ON":"OFF");
+  ctrlBtn.setAttribute("aria-pressed",String(S.ctrl));
+  ctrlBtn.classList.toggle("on",S.ctrl);
+});
+var wind=document.getElementById("wind"), windV=document.getElementById("windV");
+wind.addEventListener("input",function(){ S.W=Number(wind.value); windV.textContent=wind.value+" N"; });
+cv.addEventListener("pointerdown",function(ev){
+  if(S.crashed)return;
+  var r=cv.getBoundingClientRect();
+  var px=ev.clientX-r.left, rx=r.width/2+S.x*Math.max(80,Math.min(150,r.width/5));
+  shove(px<rx?1:-1);   /* poke from the side you clicked */
+  cv.focus({preventScroll:true});
+});
+cv.addEventListener("keydown",function(ev){
+  if(ev.key==="ArrowLeft"){shove(-1);ev.preventDefault();}
+  if(ev.key==="ArrowRight"){shove(1);ev.preventDefault();}
+  if(ev.key.toLowerCase()==="r"){reset();ev.preventDefault();}
+});
+})();
+</script>
+</body>
+</html>
