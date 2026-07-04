@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modulo Cellulo — IROS 2022 · Victor Borja</title>
+<meta name="description" content="Modulo Cellulo: Modular Versatile Tangible Educational Robots — IEEE/RSJ IROS 2022 paper by Khodr, Holdcroft, Wu, Borja, Sprumont, Bruno, Paik, and Dillenbourg (EPFL).">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Modulo Cellulo: Modular Versatile Tangible Educational Robots — IROS 2022">
+<meta property="og:description" content="Peer-reviewed IEEE/RSJ IROS 2022 paper on the modular Cellulo robot platform (EPFL). Co-authored by Victor Borja.">
+<meta property="og:url" content="https://vborjadd.github.io/modulo-cellulo/">
+<meta property="og:image" content="https://vborjadd.github.io/modulo-cellulo/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+  --paper:#f6f6f3; --ink:#1a1b2e; --soft:#3c3d55; --muted:#5d5e7a;
+  --line:#d8d8d2; --accent:#32329f; --chipbg:rgba(50,50,159,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#0f1020; --ink:#e7e7f2; --soft:#c0c1d8; --muted:#8b8ca8;
+         --line:#2a2c4a; --accent:#9b9bff; --chipbg:rgba(155,155,255,.07); }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:1.05rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:4.5rem 1.4rem 5rem}
+.eyebrow{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}
+h1{font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif;font-weight:700;
+  font-size:clamp(1.9rem,4.5vw,2.7rem);line-height:1.12;text-wrap:balance;margin:0 0 1.1rem}
+.authors{color:var(--soft);margin-bottom:.3rem}
+.authors b{color:var(--ink)}
+.venue{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;color:var(--muted);margin-bottom:2rem}
+h2{font-family:Charter,Georgia,serif;font-size:1.25rem;margin:2.4rem 0 .7rem}
+p{margin:0 0 1rem;color:var(--soft);max-width:65ch}
+.links{display:flex;flex-wrap:wrap;gap:.7rem;margin:1.8rem 0 .4rem}
+.btn{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;
+  letter-spacing:.07em;text-transform:uppercase;padding:.65rem 1rem;border:1px solid var(--accent);
+  border-radius:3px;color:var(--accent);text-decoration:none}
+.btn.primary{background:var(--accent);color:var(--paper)}
+.btn:hover{filter:brightness(1.1)}
+pre{background:var(--chipbg);border:1px solid var(--line);border-radius:5px;padding:1rem;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;overflow-x:auto;color:var(--soft)}
+a.back{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;color:var(--accent);text-decoration:none}
+a.back:hover{text-decoration:underline}
+.note{font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Publication · IEEE/RSJ IROS 2022 · Kyoto, Japan</div>
+  <h1>Modulo Cellulo: Modular Versatile Tangible Educational Robots</h1>
+  <p class="authors">Hala Khodr · Kevin Holdcroft · Yi-Shiun Wu · <b>Victor Borja</b> · Hadrien Sprumont · Barbara Bruno · Jamie Paik · Pierre Dillenbourg</p>
+  <p class="venue">EPFL — CHILI Lab &amp; RRL · DOI 10.1109/IROS47612.2022.9981983</p>
+
+  <h2>Abstract</h2>
+  <p>This article presents the novel modular version of the robotic platform Cellulo, a versatile handheld
+  robot initially designed as an educational robot. The use of Cellulo in different contexts and applications
+  over the years has highlighted the need for modularity, which adds versatility by increasing the spectrum
+  of functionalities of the robot as well as its robustness. Modulo Cellulo consists of three modules — a main
+  module, a battery module, and an interaction module. The paper describes the platform, the module designs,
+  the mechanical and electrical inter-connectivity between them, the new adaptive controller, and the
+  application development framework.</p>
+
+  <div class="links">
+    <a class="btn primary" href="https://infoscience.epfl.ch/handle/20.500.14299/189765" target="_blank" rel="noopener">Read the paper — EPFL open access</a>
+    <a class="btn" href="https://ieeexplore.ieee.org/document/9981983" target="_blank" rel="noopener">IEEE Xplore</a>
+    <a class="btn" href="https://doi.org/10.1109/IROS47612.2022.9981983" target="_blank" rel="noopener">DOI</a>
+  </div>
+  <p class="note">Open-access copy (CC BY-NC-ND) via EPFL Infoscience.</p>
+
+  <h2>Cite</h2>
+  <pre>@inproceedings{khodr2022modulo,
+  title     = {Modulo Cellulo: Modular Versatile Tangible Educational Robots},
+  author    = {Khodr, Hala and Holdcroft, Kevin and Wu, Yi-Shiun and Borja, Victor
+               and Sprumont, Hadrien and Bruno, Barbara and Paik, Jamie
+               and Dillenbourg, Pierre},
+  booktitle = {2022 IEEE/RSJ International Conference on Intelligent Robots
+               and Systems (IROS)},
+  year      = {2022},
+  doi       = {10.1109/IROS47612.2022.9981983}
+}</pre>
+
+  <p style="margin-top:2.5rem"><a class="back" href="/">← victor borja — product × robotics</a></p>
+</div>
+</body>
+</html>
