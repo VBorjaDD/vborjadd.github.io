@@ -48,6 +48,10 @@ pre{background:var(--chipbg);border:1px solid var(--line);border-radius:5px;padd
 a.back{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;color:var(--accent);text-decoration:none}
 a.back:hover{text-decoration:underline}
 .note{font-size:.85rem;color:var(--muted)}
+.trip{margin:0 0 2.2rem;display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.trip img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:5px;border:1px solid var(--line)}
+.trip figcaption{grid-column:1/-1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+@media (max-width:620px){.trip{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -56,6 +60,12 @@ a.back:hover{text-decoration:underline}
   <h1>Modulo Cellulo: Modular Versatile Tangible Educational Robots</h1>
   <p class="authors">Hala Khodr · Kevin Holdcroft · Yi-Shiun Wu · <b>Victor Borja</b> · Hadrien Sprumont · Barbara Bruno · Jamie Paik · Pierre Dillenbourg</p>
   <p class="venue">EPFL — CHILI Lab &amp; RRL · DOI 10.1109/IROS47612.2022.9981983</p>
+
+  <figure class="trip">
+    <img src="kyoto-yasaka.jpg" alt="Yasaka Pagoda above the streets of Higashiyama, Kyoto" loading="lazy">
+    <img src="fuji-chureito.jpg" alt="Chūreitō Pagoda with Mount Fuji behind" loading="lazy">
+    <figcaption>Yasaka Pagoda, Kyoto · Chūreitō Pagoda &amp; Mt. Fuji — my photos from the IROS 2022 trip, October 2022.</figcaption>
+  </figure>
 
   <h2>Abstract</h2>
   <p>This article presents the novel modular version of the robotic platform Cellulo, a versatile handheld
