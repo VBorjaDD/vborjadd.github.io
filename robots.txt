@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vborjadd.github.io/sitemap.xml
